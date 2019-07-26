@@ -1,5 +1,6 @@
 class Api::UsersController < ApplicationController
-
+  skip_before_action :authorize
+  
     def index
      @users = User.all
      render json: {users: @users}
@@ -19,6 +20,6 @@ class Api::UsersController < ApplicationController
       params.require(:user).permit(:email, :password)
     end
 
-    skip_before_action :authorize, only: [:create]
+    
     
 end
