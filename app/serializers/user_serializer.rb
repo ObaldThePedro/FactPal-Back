@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :facts
+  attributes :id, :email
 
   # def facts
   #   self.object.facts.map do |fact|
