@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-    before_action :set_current_user
+    before_action :set_current_user, except: [:validate]
     before_action :authorize
 
     def issue_token(payload)

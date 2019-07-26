@@ -9,6 +9,7 @@ def create
     else
         render json: { message: 'Invalid email or password' }, status: :unauthorized
     end
+end
 
     def validate
         user = @current_user
