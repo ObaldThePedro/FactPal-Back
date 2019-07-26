@@ -1,5 +1,5 @@
 class Api::UsersController < ApplicationController
-  skip_before_action :authorize
+  # skip_before_action :authorize
   
     def index
      @users = User.all
@@ -26,11 +26,4 @@ class Api::UsersController < ApplicationController
     def user_params
         params.require(:user).permit(:email, :password)
     end
-<<<<<<< HEAD
-
-    
-    
 end
-=======
-  end
->>>>>>> 7820d2a6ee6b5ff0a017e6e0e6eb770f096454a5
