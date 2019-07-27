@@ -1,28 +1,22 @@
 class Api::AuthController < ApplicationController
-    skip_before_action :set_current_user, only: [:create, :validate]
-    skip_before_action :authorize, only: [:create, :validate]
-    
-def create
-    user = User.find_by(email: user_login_params[:email])
-    if user && user.authenticate(user_login_params[:password])
-        render json: { user: UserSerializer.new(user), token: issue_token(user_id: user.id) }, status: :accepted
+    skip_before_action :authorized, only: [:create]
+ 
+  def create
+    @user = User.find_by(email: user_login_params[:email])
+    #User#authenticate comes from BCrypt
+    if @user && @user.authenticate(user_login_params[:password])
+      # encode token comes from ApplicationController
+      token = encode_token({ user_id: @user.id })
+      render json: { user: UserSerializer.new(@user), jwt: token }, status: :accepted
     else
-        render json: { message: 'Invalid email or password' }, status: :unauthorized
+      render json: { message: 'Invalid email or password' }, status: :unauthorized
     end
-end
-
-    def validate
-        user = @current_user
-        if user
-            render json: { user: UserSerializer.new(user), token: issue_token(user_id: user.id) }, status: :accepted
-        else 
-            render json: { errors: 'invalid token '}, status: :unauthorized
-        end
-    end
-
-    private
-
-def user_login_params
+  end
+ 
+  private
+ 
+  def user_login_params
+    # params { user: {email: 'Chandler Bing', password: 'hi' } }
     params.require(:user).permit(:email, :password)
-end
+  end
 end
